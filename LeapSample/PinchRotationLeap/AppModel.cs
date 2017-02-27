@@ -17,9 +17,7 @@ namespace PinchRotationLeap
         public LeapManager LeapManager { get; } = new LeapManager();
 
         public ReadOnlyReactiveProperty<Leap.Hand> FrontHand { get; }
-        public ReadOnlyReactiveProperty<double> InnerProduct { get; }
 
-        public ReadOnlyReactiveProperty<EulerAngles> EulerAngles_org { get; }
         public ReadOnlyReactiveProperty<EulerAngles> EulerAngles { get; }
 
         public ReadOnlyReactiveProperty<Matrix3D> Rotation { get; }
@@ -32,18 +30,11 @@ namespace PinchRotationLeap
                 .Select(f => f.Hands.Frontmost)
                 .Select(h => h?.IsValid == true ? h : null)
                 .ToReadOnlyReactiveProperty();
-            InnerProduct = FrontHand
-                .Select(h => h != null ? h.Direction.Dot(h.PalmNormal) : double.NaN)
-                .ToReadOnlyReactiveProperty();
 
-            EulerAngles_org = FrontHand
-                .Select(h => h != null ? h.GetEulerAngles_org() : new EulerAngles())
-                .ToReadOnlyReactiveProperty();
             EulerAngles = FrontHand
                 .Select(h => h != null ? h.GetEulerAngles() : new EulerAngles())
                 .ToReadOnlyReactiveProperty();
 
-            //Rotation = EulerAngles_org
             Rotation = EulerAngles
                 .Select(Rotation3DHelper.ToMatrix3D)
                 .ToReadOnlyReactiveProperty();
@@ -65,14 +56,6 @@ namespace PinchRotationLeap
     public static class Leap3DHelper
     {
         public static Vector3D ToVector3D(this Leap.Vector v) => new Vector3D(v.x, v.y, v.z);
-
-        // Wrong values.
-        public static EulerAngles GetEulerAngles_org(this Leap.Hand h) => new EulerAngles
-        {
-            Yaw = h.Direction.Yaw,
-            Pitch = h.Direction.Pitch,
-            Roll = h.PalmNormal.Roll,
-        };
 
         // Improved values.
         public static EulerAngles GetEulerAngles(this Leap.Hand h) =>
