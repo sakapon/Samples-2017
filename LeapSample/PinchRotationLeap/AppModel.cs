@@ -17,8 +17,8 @@ namespace PinchRotationLeap
         public LeapManager LeapManager { get; } = new LeapManager();
 
         public ReadOnlyReactiveProperty<Leap.Hand> FrontHand { get; }
-
-        public ReadOnlyReactiveProperty<EulerAngles> EulerAngles { get; }
+        public ReadOnlyReactiveProperty<bool> IsPinched { get; }
+        public ReadOnlyReactiveProperty<Quaternion> HandRotation { get; }
 
         public ReadOnlyReactiveProperty<Matrix3D> Rotation { get; }
 
@@ -30,15 +30,16 @@ namespace PinchRotationLeap
                 .Select(f => f.Hands.Frontmost)
                 .Select(h => h?.IsValid == true ? h : null)
                 .ToReadOnlyReactiveProperty();
-
-            EulerAngles = FrontHand
-                .Select(h => h != null ? h.GetEulerAngles() : new EulerAngles())
+            IsPinched = FrontHand
+                .Select(h => h != null && h.PinchStrength == 1.0)
+                .ToReadOnlyReactiveProperty();
+            HandRotation = FrontHand
+                .Select(h => h != null ? h.GetEulerAngles().ToQuaternion() : Quaternion.Identity)
                 .ToReadOnlyReactiveProperty();
 
-            Rotation = EulerAngles
+            Rotation = HandRotation
                 .Select(Rotation3DHelper.ToMatrix3D)
                 .ToReadOnlyReactiveProperty();
-
             Rotation
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(m => matrixTransform.Matrix = m);

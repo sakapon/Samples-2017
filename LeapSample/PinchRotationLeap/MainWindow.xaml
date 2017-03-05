@@ -55,11 +55,15 @@
                 <TextBlock Text="{Binding PalmNormal.y, StringFormat=y: \{0:F2\}}"/>
                 <TextBlock Text="{Binding PalmNormal.z, StringFormat=z: \{0:F2\}}"/>
             </StackPanel>
+            <StackPanel Margin="20,0">
+                <TextBlock Text="{Binding IsPinched.Value, StringFormat=Pinched: \{0\}}"/>
+            </StackPanel>
             <StackPanel Margin="20,5">
-                <TextBlock Text="Improved"/>
-                <TextBlock Text="{Binding EulerAngles.Value.Yaw, StringFormat=Yaw: \{0:F2\}}"/>
-                <TextBlock Text="{Binding EulerAngles.Value.Pitch, StringFormat=Pitch: \{0:F2\}}"/>
-                <TextBlock Text="{Binding EulerAngles.Value.Roll, StringFormat=Roll: \{0:F2\}}"/>
+                <TextBlock Text="Hand Rotation"/>
+                <TextBlock Text="{Binding HandRotation.Value.W, StringFormat=W: \{0:F2\}}"/>
+                <TextBlock Text="{Binding HandRotation.Value.X, StringFormat=X: \{0:F2\}}"/>
+                <TextBlock Text="{Binding HandRotation.Value.Y, StringFormat=Y: \{0:F2\}}"/>
+                <TextBlock Text="{Binding HandRotation.Value.Z, StringFormat=Z: \{0:F2\}}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
