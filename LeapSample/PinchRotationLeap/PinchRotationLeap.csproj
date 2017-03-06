@@ -93,6 +93,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppModel.cs" />
+    <Compile Include="FuncConverter.cs" />
     <Compile Include="Rotation3DHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
