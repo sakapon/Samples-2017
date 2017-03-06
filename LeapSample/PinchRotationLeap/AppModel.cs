@@ -20,6 +20,7 @@ namespace PinchRotationLeap
         public ReadOnlyReactiveProperty<bool> IsPinched { get; }
         public ReadOnlyReactiveProperty<Quaternion?> HandRotation { get; }
 
+        public IObservable<Quaternion> PinchRotateDelta { get; }
         public ReactiveProperty<Quaternion> CubeRotation { get; } = new ReactiveProperty<Quaternion>();
 
         public AppModel()
@@ -37,9 +38,22 @@ namespace PinchRotationLeap
                 .Select(h => h?.GetEulerAngles().ToQuaternion())
                 .ToReadOnlyReactiveProperty();
 
-            HandRotation
-                .Where(q => q.HasValue)
-                .Subscribe(q => CubeRotation.Value = q.Value);
+            Quaternion lastHandRotation = Quaternion.Identity;
+            PinchRotateDelta = IsPinched
+                .Where(b => b)
+                .Do(_ => lastHandRotation = HandRotation.Value.Value)
+                .SelectMany(_ => HandRotation
+                    .TakeWhile(q => IsPinched.Value)
+                    .Select(q =>
+                    {
+                        lastHandRotation.Conjugate();
+                        var d = q.Value * lastHandRotation;
+                        lastHandRotation = q.Value;
+                        return d;
+                    }));
+
+            PinchRotateDelta
+                .Subscribe(d => CubeRotation.Value = d * CubeRotation.Value);
             CubeRotation
                 .Select(Rotation3DHelper.ToMatrix3D)
                 .ObserveOn(SynchronizationContext.Current)
