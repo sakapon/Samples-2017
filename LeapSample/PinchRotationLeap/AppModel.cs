@@ -27,9 +27,11 @@ namespace PinchRotationLeap
         {
             CubeTransform = InitializeCubeTransform();
 
+            var lastId = default(int?);
             FrontHand = LeapManager.FrameArrived
                 .Select(f => f.Hands.Frontmost)
-                .Select(h => h?.IsValid == true ? h : null)
+                .Select(h => h?.IsValid == true && (!lastId.HasValue || h.Id == lastId.Value) ? h : null)
+                .Do(h => lastId = h?.Id)
                 .ToReadOnlyReactiveProperty();
             IsPinched = FrontHand
                 .Select(h => h != null && h.PinchStrength == 1.0)
