@@ -21,7 +21,7 @@ namespace PinchRotationLeap
         public ReadOnlyReactiveProperty<bool> IsPinched { get; }
 
         public IObservable<Quaternion> PinchRotateDelta { get; }
-        public ReactiveProperty<Quaternion> CubeRotation { get; } = new ReactiveProperty<Quaternion>();
+        public ReactiveProperty<Quaternion> CubeRotation { get; } = new ReactiveProperty<Quaternion>(new Quaternion(new Vector3D(-0.8, 0.3, 0.5), 60));
 
         public AppModel()
         {
@@ -66,7 +66,6 @@ namespace PinchRotationLeap
         Transform3D InitializeCubeTransform()
         {
             var transform = new Transform3DGroup();
-            transform.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(-0.8, 0.3, 0.5), 60)));
             transform.Children.Add(matrixTransform);
             return transform;
         }
