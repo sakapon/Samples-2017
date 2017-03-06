@@ -45,17 +45,7 @@
             </Viewport3D>
         </Grid>
         <StackPanel Background="#FFF8F8F8" Width="300" Grid.Column="1">
-            <StackPanel DataContext="{Binding FrontHand.Value}" Margin="20,10">
-                <TextBlock Text="Tip"/>
-                <TextBlock Text="{Binding Direction.x, StringFormat=x: \{0:F2\}}"/>
-                <TextBlock Text="{Binding Direction.y, StringFormat=y: \{0:F2\}}"/>
-                <TextBlock Text="{Binding Direction.z, StringFormat=z: \{0:F2\}}"/>
-                <TextBlock Text="Palm"/>
-                <TextBlock Text="{Binding PalmNormal.x, StringFormat=x: \{0:F2\}}"/>
-                <TextBlock Text="{Binding PalmNormal.y, StringFormat=y: \{0:F2\}}"/>
-                <TextBlock Text="{Binding PalmNormal.z, StringFormat=z: \{0:F2\}}"/>
-            </StackPanel>
-            <StackPanel Margin="20,0">
+            <StackPanel Margin="20,10">
                 <TextBlock Text="{Binding IsPinched.Value, StringFormat=Pinched: \{0\}}"/>
             </StackPanel>
             <StackPanel Margin="20,5">
@@ -64,6 +54,13 @@
                 <TextBlock Text="{Binding HandRotation.Value.X, StringFormat=X: \{0:F2\}}"/>
                 <TextBlock Text="{Binding HandRotation.Value.Y, StringFormat=Y: \{0:F2\}}"/>
                 <TextBlock Text="{Binding HandRotation.Value.Z, StringFormat=Z: \{0:F2\}}"/>
+            </StackPanel>
+            <StackPanel Margin="20,5">
+                <TextBlock Text="Cube Rotation"/>
+                <TextBlock Text="{Binding CubeRotation.Value.W, StringFormat=W: \{0:F2\}}"/>
+                <TextBlock Text="{Binding CubeRotation.Value.X, StringFormat=X: \{0:F2\}}"/>
+                <TextBlock Text="{Binding CubeRotation.Value.Y, StringFormat=Y: \{0:F2\}}"/>
+                <TextBlock Text="{Binding CubeRotation.Value.Z, StringFormat=Z: \{0:F2\}}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
