@@ -17,8 +17,8 @@ namespace PinchRotationLeap
         public LeapManager LeapManager { get; } = new LeapManager();
 
         public ReadOnlyReactiveProperty<Leap.Hand> FrontHand { get; }
-        public ReadOnlyReactiveProperty<bool> IsPinched { get; }
         public ReadOnlyReactiveProperty<Quaternion?> HandRotation { get; }
+        public ReadOnlyReactiveProperty<bool> IsPinched { get; }
 
         public IObservable<Quaternion> PinchRotateDelta { get; }
         public ReactiveProperty<Quaternion> CubeRotation { get; } = new ReactiveProperty<Quaternion>();
@@ -33,18 +33,19 @@ namespace PinchRotationLeap
                 .Select(h => h?.IsValid == true && (!lastId.HasValue || h.Id == lastId.Value) ? h : null)
                 .Do(h => lastId = h?.Id)
                 .ToReadOnlyReactiveProperty();
-            IsPinched = FrontHand
-                .Select(h => h != null && h.PinchStrength == 1.0)
-                .ToReadOnlyReactiveProperty();
             HandRotation = FrontHand
                 .Select(h => h?.GetEulerAngles().ToQuaternion())
                 .ToReadOnlyReactiveProperty();
+            IsPinched = FrontHand
+                .Select(h => h?.PinchStrength == 1.0F)
+                .ToReadOnlyReactiveProperty();
 
-            Quaternion lastHandRotation = Quaternion.Identity;
+            var lastHandRotation = Quaternion.Identity;
             PinchRotateDelta = IsPinched
                 .Where(b => b)
                 .Do(_ => lastHandRotation = HandRotation.Value.Value)
                 .SelectMany(_ => HandRotation
+                    .Where(q => q.HasValue)
                     .TakeWhile(q => IsPinched.Value)
                     .Select(q =>
                     {
