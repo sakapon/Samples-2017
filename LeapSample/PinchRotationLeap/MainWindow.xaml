@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Pinch Rotation" Height="600" Width="900" FontSize="22">
     <Window.Resources>
+        <local:FuncConverter x:Key="PinchedBackgroundConverter" ToFunc="{x:Static local:MainWindow.ToPinchedBackground}"/>
         <Style x:Key="FaceStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Width" Value="30"/>
@@ -23,7 +24,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Grid Background="#FF333333">
+        <Grid Background="{Binding IsPinched.Value, Converter={StaticResource PinchedBackgroundConverter}}">
             <Grid Visibility="Hidden">
                 <TextBlock x:Name="Face1" Style="{DynamicResource FaceStyle}" Text="1" Background="#FF222222"/>
                 <TextBlock x:Name="Face2" Style="{DynamicResource FaceStyle}" Text="2" Background="#FFDF2C2C"/>

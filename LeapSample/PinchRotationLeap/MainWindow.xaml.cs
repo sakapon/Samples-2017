@@ -21,6 +21,8 @@ namespace PinchRotationLeap
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static readonly Func<bool, string> ToPinchedBackground = x => x ? "#FF444444" : "#FF333333";
+
         public Model3D CubeModel
         {
             get { return (Model3D)GetValue(CubeModelProperty); }
