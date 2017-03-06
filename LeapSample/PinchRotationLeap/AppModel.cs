@@ -11,6 +11,8 @@ namespace PinchRotationLeap
 {
     public class AppModel
     {
+        const double MapScale = 0.05;
+
         public Transform3D CubeTransform { get; }
         QuaternionRotation3D quaternionRotation = new QuaternionRotation3D();
         TranslateTransform3D translateTransform = new TranslateTransform3D();
@@ -24,6 +26,9 @@ namespace PinchRotationLeap
 
         public IObservable<Quaternion> PinchRotateDelta { get; }
         public ReactiveProperty<Quaternion> CubeRotation { get; } = new ReactiveProperty<Quaternion>(new Quaternion(new Vector3D(-0.8, 0.3, 0.5), 60));
+
+        public IObservable<Vector3D> DragDelta { get; }
+        public ReactiveProperty<Vector3D> CubePosition { get; } = new ReactiveProperty<Vector3D>();
 
         public AppModel()
         {
@@ -65,6 +70,31 @@ namespace PinchRotationLeap
             CubeRotation
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(q => quaternionRotation.Quaternion = q);
+
+            var lastHandPosition = default(Vector3D);
+            DragDelta = IsPinched
+                .Where(b => b)
+                .Do(_ => lastHandPosition = HandPosition.Value.Value)
+                .SelectMany(_ => HandPosition
+                    .Where(v => v.HasValue)
+                    .TakeWhile(v => IsPinched.Value)
+                    .Select(v =>
+                    {
+                        var d = v.Value - lastHandPosition;
+                        lastHandPosition = v.Value;
+                        return d;
+                    }));
+
+            DragDelta
+                .Subscribe(d => CubePosition.Value += MapScale * d);
+            CubePosition
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(v =>
+                {
+                    translateTransform.OffsetX = v.X;
+                    translateTransform.OffsetY = v.Y;
+                    translateTransform.OffsetZ = v.Z;
+                });
         }
 
         Transform3D InitializeCubeTransform()

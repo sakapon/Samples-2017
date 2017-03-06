@@ -63,6 +63,12 @@
                 <TextBlock Text="{Binding CubeRotation.Value.Y, StringFormat=Y: \{0:F2\}}"/>
                 <TextBlock Text="{Binding CubeRotation.Value.Z, StringFormat=Z: \{0:F2\}}"/>
             </StackPanel>
+            <StackPanel Margin="20,5">
+                <TextBlock Text="Cube Position"/>
+                <TextBlock Text="{Binding CubePosition.Value.X, StringFormat=X: \{0:F2\}}"/>
+                <TextBlock Text="{Binding CubePosition.Value.Y, StringFormat=Y: \{0:F2\}}"/>
+                <TextBlock Text="{Binding CubePosition.Value.Z, StringFormat=Z: \{0:F2\}}"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
