@@ -12,7 +12,7 @@ namespace PinchRotationLeap
     public class AppModel
     {
         public Transform3D CubeTransform { get; }
-        MatrixTransform3D matrixTransform = new MatrixTransform3D();
+        QuaternionRotation3D quaternionRotation = new QuaternionRotation3D();
 
         public LeapManager LeapManager { get; } = new LeapManager();
 
@@ -58,15 +58,14 @@ namespace PinchRotationLeap
             PinchRotateDelta
                 .Subscribe(d => CubeRotation.Value = d * CubeRotation.Value);
             CubeRotation
-                .Select(Rotation3DHelper.ToMatrix3D)
                 .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(m => matrixTransform.Matrix = m);
+                .Subscribe(q => quaternionRotation.Quaternion = q);
         }
 
         Transform3D InitializeCubeTransform()
         {
             var transform = new Transform3DGroup();
-            transform.Children.Add(matrixTransform);
+            transform.Children.Add(new RotateTransform3D(quaternionRotation));
             return transform;
         }
     }
