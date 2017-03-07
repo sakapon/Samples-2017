@@ -44,7 +44,8 @@ namespace PinchRotationLeap
                 .Select(h => h?.GetEulerAngles().ToQuaternion())
                 .ToReadOnlyReactiveProperty();
             HandPosition = FrontHand
-                .Select(h => h?.PalmPosition.ToVector3D())
+                .Select(h => h?.Fingers.FirstOrDefault(f => f.Type == Leap.Finger.FingerType.TYPE_INDEX))
+                .Select(f => f?.IsValid == true ? f.TipPosition.ToVector3D() : default(Vector3D?))
                 .ToReadOnlyReactiveProperty();
             IsPinched = FrontHand
                 .Select(h => h?.PinchStrength == 1.0F)
