@@ -11,7 +11,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     var jsonContent = await req.Content.ReadAsStringAsync();
     dynamic data = JsonConvert.DeserializeObject(jsonContent);
 
-    if (data.n == null)
+    if (data?.n == null)
         return req.CreateResponse(HttpStatusCode.BadRequest, new
         {
             error = "Please pass n property in the input object"
