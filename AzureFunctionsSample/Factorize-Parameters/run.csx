@@ -1,4 +1,4 @@
-using System.Net;
+﻿using System.Net;
 
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, int n, TraceWriter log)
 {    
