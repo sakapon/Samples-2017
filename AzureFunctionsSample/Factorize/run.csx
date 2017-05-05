@@ -4,19 +4,17 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 {
     log.Info("C# HTTP trigger function processed a request.");
 
-    // parse query parameter
-    var n = req.GetQueryNameValuePairs()
-        .FirstOrDefault(q => string.Compare(q.Key, "n", true) == 0)
-        .Value;
+    // Parse query parameters
+    var q = req.GetQueryNameValuePairs().ToArray();
+    var n = q.FirstOrDefault(p => string.Compare(p.Key, "n", true) == 0).Value;
 
     // Get request body
     dynamic data = await req.Content.ReadAsAsync<object>();
 
-    // Set name to query string or body data
-    n = n ?? data?.n?.ToString();
+    n = data?.n?.ToString() ?? n;
 
     return n == null
-        ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass n property on the query string or in the request body")
+        ? req.CreateResponse(HttpStatusCode.BadRequest, "Pass n property on the query string or in the request body.")
         : req.CreateResponse(HttpStatusCode.OK, Factorize(n));
 }
 
