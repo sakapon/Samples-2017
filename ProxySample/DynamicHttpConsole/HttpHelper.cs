@@ -10,12 +10,10 @@ namespace DynamicHttpConsole
 {
     public static class HttpHelper
     {
-        public static string Get(string uri, object query)
-        {
-            return IsPropertiesObject(query) ?
-                Get(uri, ToDictionary(query)) :
-                Get(uri, new { query });
-        }
+        public static string Get(string uri, object query) =>
+            query == null ? Get(uri) :
+            IsPropertiesObject(query) ? Get(uri, ToDictionary(query)) :
+            Get(uri, new { query });
 
         static bool IsPropertiesObject(object o)
         {
