@@ -12,6 +12,7 @@ namespace DynamicHttpConsole
         static void Main(string[] args)
         {
             HttpHelperTest();
+            DynamicHttpProxyTest();
         }
 
         static void HttpHelperTest()
@@ -22,6 +23,15 @@ namespace DynamicHttpConsole
 
             Console.WriteLine(HttpHelper.Get(Uri_Cgis));
             Console.WriteLine(HttpHelper.Get(Uri_Cgis, new { zn = "6020881" }));
+        }
+
+        static void DynamicHttpProxyTest()
+        {
+            dynamic http = new DynamicHttpProxy();
+
+            Console.WriteLine(http.Get(Uri_Cgis));
+            Console.WriteLine(http.Get(Uri_Cgis, new { zn = "6020881" }));
+            Console.WriteLine(http.Get(Uri_Cgis, zn: "6020881"));
         }
     }
 }
