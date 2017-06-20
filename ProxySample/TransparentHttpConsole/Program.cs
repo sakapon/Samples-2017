@@ -17,12 +17,14 @@ namespace TransparentHttpConsole
         }
     }
 
+    // http://zipcloud.ibsnet.co.jp/doc/api
     [BaseUri("http://zipcloud.ibsnet.co.jp/api/search")]
     public interface IZipCloudService
     {
         string Get(string zipcode);
     }
 
+    // http://zip.cgis.biz/
     [BaseUri("http://zip.cgis.biz/xml/zip.php")]
     public interface ICgisService
     {

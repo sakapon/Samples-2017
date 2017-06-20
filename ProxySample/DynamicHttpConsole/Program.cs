@@ -6,7 +6,9 @@ namespace DynamicHttpConsole
 {
     class Program
     {
+        // http://zipcloud.ibsnet.co.jp/doc/api
         const string Uri_ZipCloud = "http://zipcloud.ibsnet.co.jp/api/search";
+        // http://zip.cgis.biz/
         const string Uri_Cgis_Xml = "http://zip.cgis.biz/xml/zip.php";
 
         static void Main(string[] args)
