@@ -11,18 +11,20 @@ namespace DynamicHttpConsole
 
         static void Main(string[] args)
         {
-            HttpHelperTest0();
-            HttpHelperTest();
+            HttpHelperTest_ZipCloud();
+            HttpHelperTest_Cgis();
+
             DynamicHttpProxyTest();
         }
 
-        static void HttpHelperTest0()
+        static void HttpHelperTest_ZipCloud()
         {
             Console.WriteLine(HttpHelper.Get(Uri_ZipCloud));
-            Console.WriteLine(HttpHelper.Get(Uri_ZipCloud, new { zipcode = "6020881" }));
+            Console.WriteLine(HttpHelper.Get(Uri_ZipCloud, new Dictionary<string, object> { { "zipcode", "6020881" } }));
+            Console.WriteLine(HttpHelper.Get(Uri_ZipCloud, new { zipcode = "6068317" }));
         }
 
-        static void HttpHelperTest()
+        static void HttpHelperTest_Cgis()
         {
             Console.WriteLine(HttpHelper.Get(Uri_Cgis_Xml));
             Console.WriteLine(HttpHelper.Get(Uri_Cgis_Xml, new Dictionary<string, object> { { "zn", "6048301" } }));
