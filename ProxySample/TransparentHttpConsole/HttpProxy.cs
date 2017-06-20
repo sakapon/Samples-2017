@@ -34,7 +34,12 @@ namespace TransparentHttpConsole
         {
             var methodCall = (IMethodCallMessage)msg;
             if (methodCall.MethodBase.DeclaringType == typeof(object))
-                throw new InvalidOperationException("Methods of the Object type can not be invoked.");
+            {
+                var result =
+                    methodCall.MethodName == "GetType" ? typeof(IService) :
+                    methodCall.MethodBase.Invoke(this, methodCall.InArgs);
+                return CreateReturnMessage(result, methodCall);
+            }
 
             var query = Enumerable.Range(0, methodCall.InArgCount)
                 .ToDictionary(methodCall.GetInArgName, methodCall.GetInArg);
@@ -52,6 +57,13 @@ namespace TransparentHttpConsole
         {
             return new ReturnMessage(returnValue, new object[0], 0, methodCall.LogicalCallContext, methodCall);
         }
+
+        #region Methods of Object class
+        // GetType method can not be overridden.
+        public override int GetHashCode() => base.GetHashCode();
+        public override bool Equals(object obj) => ReferenceEquals(GetTransparentProxy(), obj);
+        public override string ToString() => typeof(IService).ToString();
+        #endregion
     }
 
     [AttributeUsage(AttributeTargets.Interface, Inherited = false, AllowMultiple = false)]
