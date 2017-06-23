@@ -4,6 +4,8 @@ Sample programs, mainly used for [the blog (Do Design Space)](https://sakapon.wo
 ### Posts
 - [Azure Functions で Web API を作成する](https://sakapon.wordpress.com/2017/05/04/azure-functions-api/)
 - [Logic Apps から Slack に通知する](https://sakapon.wordpress.com/2017/05/07/logic-apps-slack/)
+- [DLR で名前付き引数を使う](https://sakapon.wordpress.com/2017/06/22/dynamic-named-arguments/)
+- [インターフェイスに対する透過プロキシ](https://sakapon.wordpress.com/2017/06/23/transparent-proxy-interface/)
 
 ### Thanks
 #### Zip Code APIs
