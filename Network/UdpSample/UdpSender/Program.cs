@@ -27,6 +27,8 @@ namespace UdpSender
 
             Console.WriteLine("Press [Enter] key to exit.");
             Console.ReadLine();
+
+            client.Close();
         }
     }
 }

@@ -20,9 +20,10 @@ namespace UdpReceiver
             foreach (var address in addresses)
                 Console.WriteLine(address);
 
+            var client = new UdpClient(ReceiverPort);
+
             Task.Run(() =>
             {
-                var client = new UdpClient(ReceiverPort);
                 var senderEP = default(IPEndPoint);
 
                 while (true)
@@ -51,6 +52,8 @@ namespace UdpReceiver
 
             Console.WriteLine("Press [Enter] key to exit.");
             Console.ReadLine();
+
+            client.Close();
         }
     }
 }
