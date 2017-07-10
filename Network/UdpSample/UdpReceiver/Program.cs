@@ -14,10 +14,8 @@ namespace UdpReceiver
 
         static void Main(string[] args)
         {
-            var addresses = Dns.GetHostAddresses(Dns.GetHostName())
-                .Where(a => a.AddressFamily == AddressFamily.InterNetwork);
             Console.WriteLine("IP addresses of this computer:");
-            foreach (var address in addresses)
+            foreach (var address in GetHostAddresses())
                 Console.WriteLine(address);
 
             var client = new UdpClient(ReceiverPort);
@@ -55,5 +53,9 @@ namespace UdpReceiver
 
             client.Close();
         }
+
+        static IEnumerable<IPAddress> GetHostAddresses() =>
+            Dns.GetHostAddresses(Dns.GetHostName())
+                .Where(a => a.AddressFamily == AddressFamily.InterNetwork);
     }
 }
