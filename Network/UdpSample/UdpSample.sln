@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UdpSender", "UdpSender\UdpSender.csproj", "{F9D9F885-5208-45BE-949A-0F5E5879564D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UdpReceiver", "UdpReceiver\UdpReceiver.csproj", "{B2251429-2E9C-422F-9C3C-FC32EF46078E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UdpMessenger", "UdpMessenger\UdpMessenger.csproj", "{03E1F75D-86DE-49C8-B8DA-0FA60F2A2621}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F9D9F885-5208-45BE-949A-0F5E5879564D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D9F885-5208-45BE-949A-0F5E5879564D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D9F885-5208-45BE-949A-0F5E5879564D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D9F885-5208-45BE-949A-0F5E5879564D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2251429-2E9C-422F-9C3C-FC32EF46078E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2251429-2E9C-422F-9C3C-FC32EF46078E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2251429-2E9C-422F-9C3C-FC32EF46078E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2251429-2E9C-422F-9C3C-FC32EF46078E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03E1F75D-86DE-49C8-B8DA-0FA60F2A2621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03E1F75D-86DE-49C8-B8DA-0FA60F2A2621}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03E1F75D-86DE-49C8-B8DA-0FA60F2A2621}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03E1F75D-86DE-49C8-B8DA-0FA60F2A2621}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
