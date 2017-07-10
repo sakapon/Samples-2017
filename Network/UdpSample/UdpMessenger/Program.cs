@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace UdpMessenger
 {
@@ -24,14 +25,17 @@ namespace UdpMessenger
                 {
                     client.TextReceived += s => Console.WriteLine($"Received: {s}");
 
-                    Console.WriteLine();
-                    Console.WriteLine("Input message.");
-                    Console.WriteLine("Input [x] to exit.");
-
-                    foreach (var message in GetInputs())
+                    var timer = new Timer(o =>
                     {
-                        client.SendText(message);
-                    }
+                        var text = $"{DateTime.Now:HH:mm:ss.fff}";
+                        client.SendText(text);
+                        Console.WriteLine($"Sent: {text}");
+                    },
+                    null, 1000, 2000);
+
+                    Console.WriteLine();
+                    Console.WriteLine("Press [Enter] key to exit.");
+                    Console.ReadLine();
                 }
             }
             catch (Exception ex)
@@ -49,16 +53,6 @@ namespace UdpMessenger
             Console.Write(message);
             var input = Console.ReadLine();
             return string.IsNullOrWhiteSpace(input) ? defaultValue : input;
-        }
-
-        static IEnumerable<string> GetInputs(string message = "", string defaultValue = "")
-        {
-            while (true)
-            {
-                var input = GetInput(message, defaultValue);
-                if (string.Equals(input, "x", StringComparison.InvariantCultureIgnoreCase)) yield break;
-                yield return input;
-            }
         }
     }
 }
