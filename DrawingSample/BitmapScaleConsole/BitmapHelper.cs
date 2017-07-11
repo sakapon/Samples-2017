@@ -17,14 +17,14 @@ namespace BitmapScaleConsole
             return bitmap;
         }
 
-        public static Bitmap ScaleImage(Image source, int width, int height)
+        // Bilinear (Default) or HighQualityBilinear.
+        public static Bitmap ScaleImage(Image source, int width, int height, InterpolationMode interpolationMode = InterpolationMode.HighQualityBilinear)
         {
             var bitmap = new Bitmap(width, height);
 
             using (var graphics = Graphics.FromImage(bitmap))
             {
-                // Bilinear (Default) or HighQualityBilinear.
-                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                graphics.InterpolationMode = interpolationMode;
                 graphics.DrawImage(source, 0, 0, width, height);
             }
             return bitmap;
