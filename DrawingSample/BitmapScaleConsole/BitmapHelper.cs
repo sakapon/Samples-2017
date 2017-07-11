@@ -17,7 +17,8 @@ namespace BitmapScaleConsole
             return bitmap;
         }
 
-        // Bilinear (Default) or HighQualityBilinear.
+        // Default = Low = Bilinear
+        // High = HighQualityBicubic
         public static Bitmap ScaleImage(Image source, int width, int height, InterpolationMode interpolationMode = InterpolationMode.HighQualityBilinear)
         {
             var bitmap = new Bitmap(width, height);

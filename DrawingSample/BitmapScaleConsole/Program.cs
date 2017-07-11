@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 
 namespace BitmapScaleConsole
@@ -13,14 +15,23 @@ namespace BitmapScaleConsole
             Console.ReadLine();
 
             var now = $"{DateTime.Now:yyyyMMdd-HHmmss}";
-            var fileName = $"{now}.png";
-            var fileName_scaled = $"{now}-Scaled.jpg";
+            Directory.CreateDirectory(now);
 
-            using (var bitmap = BitmapHelper.GetScreenBitmap(200, 100, 1200, 800))
-            using (var scaled = BitmapHelper.ScaleImage(bitmap, 600, 400))
+            using (var bitmap = BitmapHelper.GetScreenBitmap(200, 100, 1080, 720))
             {
-                bitmap.Save(fileName, ImageFormat.Png);
-                scaled.Save(fileName_scaled, ImageFormat.Jpeg);
+                bitmap.Save($@"{now}\Original.png", ImageFormat.Png);
+                bitmap.Save($@"{now}\Original.jpg", ImageFormat.Jpeg);
+
+                var modes = Enum.GetValues(typeof(InterpolationMode))
+                    .Cast<InterpolationMode>()
+                    .Where(m => m != InterpolationMode.Invalid);
+                foreach (var mode in modes)
+                {
+                    using (var scaled = BitmapHelper.ScaleImage(bitmap, 540, 360, mode))
+                    {
+                        scaled.Save($@"{now}\{mode}.jpg", ImageFormat.Jpeg);
+                    }
+                }
             }
         }
     }
