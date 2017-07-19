@@ -8,6 +8,11 @@ namespace CrossCuttingConsole
 {
     public class CrossCuttingProxy : RealProxy
     {
+        public static T CreateProxy<T>() where T : MarshalByRefObject, new()
+        {
+            throw new NotImplementedException();
+        }
+
         public override IMessage Invoke(IMessage msg)
         {
             throw new NotImplementedException();
