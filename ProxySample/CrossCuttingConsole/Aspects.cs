@@ -10,7 +10,20 @@ namespace CrossCuttingConsole
     {
         public override IMethodReturnMessage Invoke(Func<IMethodReturnMessage> baseInvoke, MarshalByRefObject target, IMethodCallMessage methodCall)
         {
-            throw new NotImplementedException();
+            var methodLog = $"{methodCall.MethodBase.DeclaringType.Name}.{methodCall.MethodName}({string.Join(", ", methodCall.InArgs)})";
+            Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Begin: {methodLog}");
+
+            var result = baseInvoke();
+
+            if (result.Exception == null)
+                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Success: {methodLog}");
+            else
+            {
+                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Error: {methodLog}");
+                Console.WriteLine(result.Exception);
+            }
+
+            return result;
         }
     }
 
@@ -34,7 +47,14 @@ namespace CrossCuttingConsole
 
         public override IMethodReturnMessage Invoke(Func<IMethodReturnMessage> baseInvoke, MarshalByRefObject target, IMethodCallMessage methodCall)
         {
-            throw new NotImplementedException();
+            using (var scope = new TransactionScope(TransactionScopeOption, TransactionOptions))
+            {
+                var result = baseInvoke();
+
+                scope.Complete();
+
+                return result;
+            }
         }
     }
 }
