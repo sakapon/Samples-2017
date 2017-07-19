@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Activation;
 using System.Runtime.Remoting.Messaging;
@@ -43,7 +44,13 @@ namespace CrossCuttingConsole
 
         IMethodReturnMessage InvokeMethod(IMethodCallMessage methodCall)
         {
-            return RemotingServices.ExecuteMessage(Target, methodCall);
+            Func<IMethodReturnMessage> baseInvoke = () => RemotingServices.ExecuteMessage(Target, methodCall);
+
+            var newInvoke = methodCall.MethodBase.GetCustomAttributes<AspectAttribute>(true)
+                .Reverse()
+                .Aggregate(baseInvoke, (f, a) => () => a.Invoke(f, Target, methodCall));
+
+            return newInvoke();
         }
 
         IConstructionReturnMessage InvokeConstructor(IConstructionCallMessage constructionCall)
