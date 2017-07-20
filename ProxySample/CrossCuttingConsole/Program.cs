@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 
 namespace CrossCuttingConsole
 {
@@ -9,34 +8,22 @@ namespace CrossCuttingConsole
     {
         static void Main(string[] args)
         {
-            var category = CrossCuttingProxy.CreateProxy<CategoryBusiness>();
-            category.PropertyTest = 123;
-            category.InsertCategory("Books");
+            NorthwindBusinessTest();
+        }
+
+        static void NorthwindBusinessTest()
+        {
+            var nw = CrossCuttingProxy.CreateProxy<NorthwindBusiness>();
+            var units = nw.SelectUnitsInStock();
+            nw.InsertCategory("Books");
+            nw.PropertyTest = 123;
             try
             {
-                category.ErrorTest();
+                nw.ErrorTest();
             }
             catch (Exception)
             {
             }
-        }
-    }
-
-    public class CategoryBusiness : MarshalByRefObject
-    {
-        public int PropertyTest { get; [TraceLog]set; }
-
-        [TraceLog]
-        [TransactionScope(IsolationLevel.Serializable)]
-        public void InsertCategory(string name)
-        {
-            Console.WriteLine("InsertCategory");
-        }
-
-        [TraceLog]
-        public void ErrorTest()
-        {
-            throw new InvalidOperationException("This is an error test.");
         }
     }
 }

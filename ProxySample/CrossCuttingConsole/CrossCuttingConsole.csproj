@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Aspects.cs" />
     <Compile Include="CrossCuttingProxy.cs" />
+    <Compile Include="NorthwindBusiness.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
