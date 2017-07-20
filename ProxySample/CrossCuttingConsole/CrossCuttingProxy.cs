@@ -31,12 +31,10 @@ namespace CrossCuttingConsole
 
         public override IMessage Invoke(IMessage msg)
         {
-            var methodCall = msg as IMethodCallMessage;
-            if (methodCall != null)
+            if (msg is IMethodCallMessage methodCall)
                 return InvokeMethod(methodCall);
 
-            var constructionCall = msg as IConstructionCallMessage;
-            if (constructionCall != null)
+            if (msg is IConstructionCallMessage constructionCall)
                 return InvokeConstructor(constructionCall);
 
             throw new InvalidOperationException();
