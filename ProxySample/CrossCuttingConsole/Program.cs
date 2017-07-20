@@ -8,12 +8,8 @@ namespace CrossCuttingConsole
     {
         static void Main(string[] args)
         {
-            NorthwindBusinessTest();
-        }
-
-        static void NorthwindBusinessTest()
-        {
             var nw = CrossCuttingProxy.CreateProxy<NorthwindBusiness>();
+            //var nw = new NorthwindBusiness2();
             var units = nw.SelectUnitsInStock();
             nw.InsertCategory("Books");
             nw.PropertyTest = 123;
