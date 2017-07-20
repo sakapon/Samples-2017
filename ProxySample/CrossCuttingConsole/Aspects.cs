@@ -8,16 +8,16 @@ namespace CrossCuttingConsole
     {
         public override IMethodReturnMessage Invoke(Func<IMethodReturnMessage> baseInvoke, MarshalByRefObject target, IMethodCallMessage methodCall)
         {
-            var methodLog = $"{methodCall.MethodBase.DeclaringType.Name}.{methodCall.MethodName}({string.Join(", ", methodCall.InArgs)})";
-            Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Begin: {methodLog}");
+            var methodInfo = $"{methodCall.MethodBase.DeclaringType.Name}.{methodCall.MethodName}({string.Join(", ", methodCall.InArgs)})";
+            Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Begin: {methodInfo}");
 
             var result = baseInvoke();
 
             if (result.Exception == null)
-                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Success: {methodLog}");
+                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Success: {methodInfo}");
             else
             {
-                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Error: {methodLog}");
+                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: Error: {methodInfo}");
                 Console.WriteLine(result.Exception);
             }
 
