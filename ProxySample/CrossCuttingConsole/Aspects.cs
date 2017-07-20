@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Transactions;
 
@@ -29,20 +27,20 @@ namespace CrossCuttingConsole
 
     public class TransactionScopeAttribute : AspectAttribute
     {
-        public TransactionScopeOption TransactionScopeOption { get; }
         public TransactionOptions TransactionOptions { get; }
+        public TransactionScopeOption TransactionScopeOption { get; }
 
         public TransactionScopeAttribute(
-            TransactionScopeOption scopeOption = TransactionScopeOption.Required,
             IsolationLevel isolationLevel = IsolationLevel.ReadCommitted,
-            double timeoutInSeconds = 30)
+            double timeoutInSeconds = 30,
+            TransactionScopeOption scopeOption = TransactionScopeOption.Required)
         {
-            TransactionScopeOption = scopeOption;
             TransactionOptions = new TransactionOptions
             {
                 IsolationLevel = isolationLevel,
                 Timeout = TimeSpan.FromSeconds(timeoutInSeconds),
             };
+            TransactionScopeOption = scopeOption;
         }
 
         public override IMethodReturnMessage Invoke(Func<IMethodReturnMessage> baseInvoke, MarshalByRefObject target, IMethodCallMessage methodCall)
