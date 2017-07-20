@@ -31,13 +31,21 @@ namespace CrossCuttingConsole
 
         public override IMessage Invoke(IMessage msg)
         {
-            if (msg is IMethodCallMessage methodCall)
-                return InvokeMethod(methodCall);
-
             if (msg is IConstructionCallMessage constructionCall)
                 return InvokeConstructor(constructionCall);
 
+            if (msg is IMethodCallMessage methodCall)
+                return InvokeMethod(methodCall);
+
             throw new InvalidOperationException();
+        }
+
+        IConstructionReturnMessage InvokeConstructor(IConstructionCallMessage constructionCall)
+        {
+            var constructionReturn = InitializeServerObject(constructionCall);
+            Target = GetUnwrappedServer();
+            SetStubData(this, Target);
+            return constructionReturn;
         }
 
         IMethodReturnMessage InvokeMethod(IMethodCallMessage methodCall)
@@ -50,19 +58,19 @@ namespace CrossCuttingConsole
 
             return newInvoke();
         }
-
-        IConstructionReturnMessage InvokeConstructor(IConstructionCallMessage constructionCall)
-        {
-            var constructionReturn = InitializeServerObject(constructionCall);
-            Target = GetUnwrappedServer();
-            SetStubData(this, Target);
-            return constructionReturn;
-        }
     }
 
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public abstract class AspectAttribute : Attribute
     {
         public abstract IMethodReturnMessage Invoke(Func<IMethodReturnMessage> baseInvoke, MarshalByRefObject target, IMethodCallMessage methodCall);
+    }
+
+    public sealed class CrossCuttingAttribute : ProxyAttribute
+    {
+        public override MarshalByRefObject CreateInstance(Type serverType)
+        {
+            return (MarshalByRefObject)new CrossCuttingProxy(serverType).GetTransparentProxy();
+        }
     }
 }
