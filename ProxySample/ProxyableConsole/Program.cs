@@ -26,6 +26,21 @@ namespace ProxyableConsole
                     return r;
                 })
                 .Execute();
+
+            Proxyable.Body(() => Console.WriteLine("Body"))
+                .Aspect(a =>
+                {
+                    Console.WriteLine("Before");
+                    a();
+                    Console.WriteLine("After");
+                })
+                .Aspect(a =>
+                {
+                    Console.WriteLine("Begin");
+                    a();
+                    Console.WriteLine("End");
+                })
+                .Execute();
         }
     }
 }
