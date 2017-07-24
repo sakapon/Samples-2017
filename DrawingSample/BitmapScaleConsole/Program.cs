@@ -27,9 +27,9 @@ namespace BitmapScaleConsole
                     .Where(m => m != InterpolationMode.Invalid);
                 foreach (var mode in modes)
                 {
-                    using (var scaled = BitmapHelper.ScaleImage(bitmap, bitmap.Width / 2, bitmap.Height / 2, mode))
+                    using (var resized = BitmapHelper.ResizeImage(bitmap, bitmap.Width / 2, bitmap.Height / 2, mode))
                     {
-                        scaled.Save($@"{now}\{mode}.jpg", ImageFormat.Jpeg);
+                        resized.Save($@"{now}\{mode}.jpg", ImageFormat.Jpeg);
                     }
                 }
             }
