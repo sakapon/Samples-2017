@@ -60,7 +60,7 @@ namespace BitmapScaleConsole
                 case ".hdp":
                     return new WmpBitmapEncoder();
                 default:
-                    throw new ArgumentException("Can not encode bitmaps for the specified file extension.", "filePath");
+                    throw new ArgumentException("Can not encode bitmaps for the specified file extension.", nameof(filePath));
             }
         }
 

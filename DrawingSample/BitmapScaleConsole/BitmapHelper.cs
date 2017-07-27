@@ -68,7 +68,7 @@ namespace BitmapScaleConsole
                 case ".emf":
                     return ImageFormat.Emf;
                 default:
-                    throw new ArgumentException("Can not encode bitmaps for the specified file extension.", "filePath");
+                    throw new ArgumentException("Can not encode bitmaps for the specified file extension.", nameof(filePath));
             }
         }
 
