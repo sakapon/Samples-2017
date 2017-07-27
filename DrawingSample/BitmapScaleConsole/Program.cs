@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 
@@ -18,10 +17,10 @@ namespace BitmapScaleConsole
             var dirName = $"{DateTime.Now:yyyyMMdd-HHmmss}";
             Directory.CreateDirectory(dirName);
 
-            using (var bitmap = BitmapHelper.GetScreenBitmap(200, 100, 1080, 720))
+            using (var bitmap = BitmapHelper.GetScreenBitmap(200, 100, 1920, 1080))
             {
-                bitmap.Save($@"{dirName}\Original.png", ImageFormat.Png);
-                bitmap.Save($@"{dirName}\Original.jpg", ImageFormat.Jpeg);
+                BitmapHelper.SaveImage($@"{dirName}\{dirName}.png", bitmap);
+                BitmapHelper.SaveImage($@"{dirName}\{dirName}.jpg", bitmap);
 
                 ResizeImageTest_Drawing(dirName, bitmap);
                 ResizeImageTest_Windows(dirName, bitmap);
@@ -37,7 +36,7 @@ namespace BitmapScaleConsole
             {
                 using (var resized = BitmapHelper.ResizeImage(bitmap, bitmap.Width / 2, bitmap.Height / 2, mode))
                 {
-                    resized.Save($@"{dirName}\{mode}.jpg", ImageFormat.Jpeg);
+                    BitmapHelper.SaveImage($@"{dirName}\{mode}.jpg", resized);
                 }
             }
         }
