@@ -36,12 +36,12 @@ namespace BitmapScaleConsole
             return bitmap;
         }
 
-        public static void SaveImage(string filePath, Bitmap bitmap)
+        public static void SaveImage(string filePath, Image image)
         {
             var fullPath = Path.GetFullPath(filePath);
             var format = ToImageFormat(fullPath);
 
-            bitmap.Save(fullPath, format);
+            image.Save(fullPath, format);
         }
 
         static ImageFormat ToImageFormat(string filePath)
