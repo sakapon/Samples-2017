@@ -36,6 +36,42 @@ namespace BitmapScaleConsole
             return bitmap;
         }
 
+        public static void SaveImage(string filePath, Bitmap bitmap)
+        {
+            var fullPath = Path.GetFullPath(filePath);
+            var format = ToImageFormat(fullPath);
+
+            bitmap.Save(fullPath, format);
+        }
+
+        static ImageFormat ToImageFormat(string filePath)
+        {
+            switch (Path.GetExtension(filePath).ToLowerInvariant())
+            {
+                case ".bmp":
+                    return ImageFormat.Bmp;
+                case ".gif":
+                    return ImageFormat.Gif;
+                case ".jpeg":
+                case ".jpg":
+                case ".jpe":
+                    return ImageFormat.Jpeg;
+                case ".png":
+                    return ImageFormat.Png;
+                case ".tiff":
+                case ".tif":
+                    return ImageFormat.Tiff;
+                case ".ico":
+                    return ImageFormat.Icon;
+                case ".wmf":
+                    return ImageFormat.Wmf;
+                case ".emf":
+                    return ImageFormat.Emf;
+                default:
+                    throw new ArgumentException("Can not encode bitmaps for the specified file extension.", "filePath");
+            }
+        }
+
         public static Stream ToStream(Bitmap bitmap)
         {
             var memory = new MemoryStream();
