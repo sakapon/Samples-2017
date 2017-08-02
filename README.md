@@ -8,6 +8,7 @@ Sample programs, mainly used for [the blog (Do Design Space)](https://sakapon.wo
 - [インターフェイスに対する透過プロキシ](https://sakapon.wordpress.com/2017/06/23/transparent-proxy-interface/)
 - [透過プロキシでアスペクト指向プログラミング (1)](https://sakapon.wordpress.com/2017/07/20/transparent-proxy-aop-1/)
 - [透過プロキシでアスペクト指向プログラミング (2)](https://sakapon.wordpress.com/2017/07/21/transparent-proxy-aop-2/)
+- [メソッドチェーンでアスペクト指向プログラミング](https://sakapon.wordpress.com/2017/07/31/method-chain-aop/)
 
 ### Thanks
 #### Zip Code APIs
