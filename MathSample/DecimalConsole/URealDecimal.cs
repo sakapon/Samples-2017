@@ -40,5 +40,85 @@ namespace DecimalConsole
             _digits = digits;
             Degree = degree;
         }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public static URealDecimal operator +(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static URealDecimal operator -(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static URealDecimal operator *(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static URealDecimal operator /(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static URealDecimal operator ^(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator <<(URealDecimal d, int shift)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator >>(URealDecimal d, int shift)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator ==(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator !=(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator <(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator >(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator <=(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator >=(URealDecimal d1, URealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
