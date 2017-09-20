@@ -26,5 +26,8 @@ namespace DecimalConsole
         {
             throw new NotImplementedException();
         }
+
+        public static bool ArrayEquals<T>(this T[] source, T[] second) where T : IEquatable<T> =>
+            source.Length == second.Length && Enumerable.Range(0, source.Length).All(i => source[i].Equals(second[i]));
     }
 }
