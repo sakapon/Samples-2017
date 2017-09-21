@@ -21,7 +21,7 @@ namespace DecimalConsole
             {
                 if (!Degree.HasValue) return 0;
                 var i = Degree.Value - index;
-                return (0 <= i || i < Digits.Length) ? Digits[i] : 0;
+                return (0 <= i && i < Digits.Length) ? Digits[i] : 0;
             }
         }
 
@@ -98,14 +98,22 @@ namespace DecimalConsole
             return $"{split[0].ToSimpleString()}.{split[1].ToSimpleString()}";
         }
 
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
+        public override bool Equals(object obj) =>
+            obj is URealDecimal d && this == d;
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            if (!Degree.HasValue) return 0;
+
+            var sum = 0;
+            var p = 1;
+            var count = Math.Min(Digits.Length, 9);
+            for (var i = 0; i < count; i++)
+            {
+                sum += Digits[Digits.Length - 1 - i] * p;
+                p *= 10;
+            }
+            return sum;
         }
 
         public static implicit operator URealDecimal(string value) => new URealDecimal(value);
