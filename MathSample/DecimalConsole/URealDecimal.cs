@@ -10,10 +10,14 @@ namespace DecimalConsole
         static readonly IDictionary<char, byte> DigitsMap = Enumerable.Range(0, 10).ToDictionary(i => i.ToString()[0], i => (byte)i);
         static readonly byte[] _digits_empty = new byte[0];
 
+        public static URealDecimal Zero { get; } = default(URealDecimal);
+
         byte[] _digits;
         byte[] Digits => _digits ?? _digits_empty;
 
         public int? Degree { get; }
+
+        public bool IsZero => !Degree.HasValue;
 
         public double this[int index]
         {
