@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace DecimalConsole
 {
@@ -41,6 +42,44 @@ namespace DecimalConsole
             Degree = degree;
         }
 
+        URealDecimal(string value)
+        {
+            var match = Regex.Match(value, @"^([0-9]+)(\.([0-9]+))?$");
+            if (!match.Success) throw new ArgumentException("Parse Error.");
+
+            var intPart = match.Groups[1].Value.TrimStart('0');
+            var decPart = match.Groups[3].Success ? match.Groups[3].Value.TrimEnd('0') : "";
+
+            if (intPart == "")
+            {
+                if (decPart == "")
+                {
+                    _digits = null;
+                    Degree = null;
+                }
+                else
+                {
+                    var i = 0;
+                    for (; i < decPart.Length; i++)
+                    {
+                        if (decPart[i] != '0') break;
+                    }
+
+                    _digits = decPart.Substring(i)
+                        .Select(c => DigitsMap[c])
+                        .ToArray();
+                    Degree = -i - 1;
+                }
+            }
+            else
+            {
+                _digits = (intPart + decPart).TrimEnd('0')
+                    .Select(c => DigitsMap[c])
+                    .ToArray();
+                Degree = intPart.Length - 1;
+            }
+        }
+
         public override string ToString()
         {
             // 0
@@ -68,6 +107,8 @@ namespace DecimalConsole
         {
             return base.GetHashCode();
         }
+
+        public static implicit operator URealDecimal(string value) => new URealDecimal(value);
 
         public static URealDecimal operator +(URealDecimal d1, URealDecimal d2)
         {
