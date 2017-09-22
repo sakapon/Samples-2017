@@ -146,9 +146,31 @@ namespace DecimalConsole
             return new URealDecimal(digits, maxIndex);
         }
 
+        // Assert d1 >= d2.
         public static URealDecimal operator -(URealDecimal d1, URealDecimal d2)
         {
-            throw new NotImplementedException();
+            var digits_dic = new Dictionary<int, byte>();
+            foreach (var _ in d1.GetDigitsAsPairs())
+                Add(digits_dic, _.i, _.v);
+            foreach (var _ in d2.GetDigitsAsPairs())
+                Subtract1(digits_dic, _.i, _.v);
+
+            if (digits_dic.Count == 0) return Zero;
+
+            var indexes = digits_dic
+                .Where(p => p.Value != 0)
+                .Select(p => p.Key)
+                .ToArray();
+            var maxIndex = indexes.Max();
+            var minIndex = indexes.Min();
+
+            var digits = new byte[maxIndex - minIndex + 1];
+            for (var i = 0; i < digits.Length; i++)
+            {
+                var j = maxIndex - i;
+                digits[i] = digits_dic.ContainsKey(j) ? digits_dic[j] : (byte)0;
+            }
+            return new URealDecimal(digits, maxIndex);
         }
 
         public static URealDecimal operator *(URealDecimal d1, URealDecimal d2)
@@ -233,6 +255,24 @@ namespace DecimalConsole
             {
                 Add(digits, index + 1, v / 10);
                 digits[index] = (byte)(v % 10);
+            }
+        }
+
+        // digits >= value
+        // value: 0...9
+        static void Subtract1(Dictionary<int, byte> digits, int index, int value)
+        {
+            var v = digits.ContainsKey(index) ? digits[index] : 0;
+            v -= value;
+
+            if (v >= 0)
+            {
+                digits[index] = (byte)v;
+            }
+            else
+            {
+                Subtract1(digits, index + 1, 1);
+                digits[index] = (byte)(v + 10);
             }
         }
     }
