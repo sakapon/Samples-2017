@@ -124,7 +124,26 @@ namespace DecimalConsole
 
         public static URealDecimal operator +(URealDecimal d1, URealDecimal d2)
         {
-            throw new NotImplementedException();
+            var digits_dic = new Dictionary<int, byte>();
+            foreach (var _ in d1.GetDigitsAsPairs().Concat(d2.GetDigitsAsPairs()))
+                Add(digits_dic, _.i, _.v);
+
+            if (digits_dic.Count == 0) return Zero;
+
+            var indexes = digits_dic
+                .Where(p => p.Value != 0)
+                .Select(p => p.Key)
+                .ToArray();
+            var maxIndex = indexes.Max();
+            var minIndex = indexes.Min();
+
+            var digits = new byte[maxIndex - minIndex + 1];
+            for (var i = 0; i < digits.Length; i++)
+            {
+                var j = maxIndex - i;
+                digits[i] = digits_dic.ContainsKey(j) ? digits_dic[j] : (byte)0;
+            }
+            return new URealDecimal(digits, maxIndex);
         }
 
         public static URealDecimal operator -(URealDecimal d1, URealDecimal d2)
@@ -192,5 +211,29 @@ namespace DecimalConsole
 
         public static bool operator >=(URealDecimal d1, URealDecimal d2) =>
             !(d1 < d2);
+
+        IEnumerable<(int i, byte v)> GetDigitsAsPairs()
+        {
+            if (!Degree.HasValue) return Enumerable.Empty<(int, byte)>();
+
+            var degree = Degree.Value;
+            return Digits.Select((v, i) => (degree - i, v));
+        }
+
+        static void Add(Dictionary<int, byte> digits, int index, int value)
+        {
+            var v = digits.ContainsKey(index) ? digits[index] : 0;
+            v += value;
+
+            if (v < 10)
+            {
+                digits[index] = (byte)v;
+            }
+            else
+            {
+                Add(digits, index + 1, v / 10);
+                digits[index] = (byte)(v % 10);
+            }
+        }
     }
 }
