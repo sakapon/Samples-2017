@@ -145,7 +145,15 @@ namespace DecimalConsole
 
         public static URealDecimal operator *(URealDecimal d1, URealDecimal d2)
         {
-            throw new NotImplementedException();
+            var digits = new Dictionary<int, byte>();
+
+            var q = from p1 in d1.GetDigitsAsPairs()
+                    from p2 in d2.GetDigitsAsPairs()
+                    select (i: p1.i + p2.i, v: p1.v * p2.v);
+
+            foreach (var _ in q)
+                Add(digits, _.i, _.v);
+            return ToURealDecimal(digits);
         }
 
         public static URealDecimal operator /(URealDecimal d1, URealDecimal d2)
@@ -153,9 +161,15 @@ namespace DecimalConsole
             throw new NotImplementedException();
         }
 
-        public static URealDecimal operator ^(URealDecimal d1, URealDecimal d2)
+        // Power
+        public static URealDecimal operator ^(URealDecimal d, int power)
         {
-            throw new NotImplementedException();
+            if (power < 0) throw new ArgumentOutOfRangeException(nameof(power), "The value must be non-negative.");
+
+            URealDecimal result = "1";
+            for (var i = 0; i < power; i++)
+                result *= d;
+            return result;
         }
 
         public static URealDecimal operator <<(URealDecimal d, int shift) =>
