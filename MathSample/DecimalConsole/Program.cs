@@ -20,16 +20,20 @@ namespace DecimalConsole
 
         static void URealDecimal_ToString()
         {
-            void Test(byte[] digits, int? degree = null) => WriteLine(new URealDecimal(digits, degree));
+            void Test(string expected, byte[] digits, int? degree)
+            {
+                var d = new URealDecimal(digits, degree);
+                if (expected != d.ToString()) WriteLine($"{expected} != {d}");
+            }
 
-            Test(null);
-            Test(new byte[] { 1 }, 0);
-            Test(new byte[] { 1, 2, 3 }, 2);
-            Test(new byte[] { 1, 2, 3 }, 4);
-            Test(new byte[] { 1 }, -1);
-            Test(new byte[] { 1, 2, 3 }, -1);
-            Test(new byte[] { 1, 2, 3 }, -3);
-            Test(new byte[] { 1, 2, 3, 4 }, 1);
+            Test("0", null, null);
+            Test("1", new byte[] { 1 }, 0);
+            Test("123", new byte[] { 1, 2, 3 }, 2);
+            Test("12300", new byte[] { 1, 2, 3 }, 4);
+            Test("0.1", new byte[] { 1 }, -1);
+            Test("0.123", new byte[] { 1, 2, 3 }, -1);
+            Test("0.00123", new byte[] { 1, 2, 3 }, -3);
+            Test("12.34", new byte[] { 1, 2, 3, 4 }, 1);
         }
 
         static void URealDecimal_Add()
