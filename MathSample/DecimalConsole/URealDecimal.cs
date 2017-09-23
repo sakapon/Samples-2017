@@ -46,7 +46,7 @@ namespace DecimalConsole
             Degree = degree;
         }
 
-        URealDecimal(string value)
+        static URealDecimal FromString(string value)
         {
             var match = Regex.Match(value, @"^([0-9]+)(\.([0-9]+))?$");
             if (!match.Success) throw new ArgumentException("Parse Error.");
@@ -58,8 +58,7 @@ namespace DecimalConsole
             {
                 if (decPart == "")
                 {
-                    _digits = null;
-                    Degree = null;
+                    return Zero;
                 }
                 else
                 {
@@ -69,20 +68,23 @@ namespace DecimalConsole
                         if (decPart[i] != '0') break;
                     }
 
-                    _digits = decPart.Substring(i)
+                    var digits = decPart.Substring(i)
                         .Select(c => DigitsMap[c])
                         .ToArray();
-                    Degree = -i - 1;
+                    return new URealDecimal(digits, -i - 1);
                 }
             }
             else
             {
-                _digits = (intPart + decPart).TrimEnd('0')
+                var digits = (intPart + decPart).TrimEnd('0')
                     .Select(c => DigitsMap[c])
                     .ToArray();
-                Degree = intPart.Length - 1;
+                return new URealDecimal(digits, intPart.Length - 1);
             }
         }
+
+        static URealDecimal FromInt32(int value) => value.ToString();
+        static URealDecimal FromDouble(double value) => value.ToString();
 
         public override string ToString()
         {
@@ -120,7 +122,9 @@ namespace DecimalConsole
             return sum;
         }
 
-        public static implicit operator URealDecimal(string value) => new URealDecimal(value);
+        public static implicit operator URealDecimal(string value) => FromString(value);
+        public static implicit operator URealDecimal(int value) => FromInt32(value);
+        public static implicit operator URealDecimal(double value) => FromDouble(value);
 
         public static URealDecimal operator +(URealDecimal d1, URealDecimal d2)
         {
@@ -139,7 +143,7 @@ namespace DecimalConsole
             foreach (var _ in d1.GetDigitsAsPairs())
                 Add(digits, _.i, _.v);
             foreach (var _ in d2.GetDigitsAsPairs())
-                Subtract1(digits, _.i, _.v);
+                Subtract_1(digits, _.i, _.v);
             return ToURealDecimal(digits);
         }
 
@@ -244,7 +248,7 @@ namespace DecimalConsole
 
         // digits >= value
         // value: 0...9
-        static void Subtract1(Dictionary<int, byte> digits, int index, int value)
+        static void Subtract_1(Dictionary<int, byte> digits, int index, int value)
         {
             var v = digits.ContainsKey(index) ? digits[index] : 0;
             v -= value;
@@ -255,7 +259,7 @@ namespace DecimalConsole
             }
             else
             {
-                Subtract1(digits, index + 1, 1);
+                Subtract_1(digits, index + 1, 1);
                 digits[index] = (byte)(v + 10);
             }
         }
