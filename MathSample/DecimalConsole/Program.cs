@@ -13,6 +13,7 @@ namespace DecimalConsole
             URealDecimal_Add();
             URealDecimal_Subtract();
             URealDecimal_Multiply();
+            URealDecimal_Power();
 
             EnumerableHelperTest();
         }
@@ -64,6 +65,15 @@ namespace DecimalConsole
             URealDecimal_Multiply("1", "32", "0.03125");
         }
 
+        static void URealDecimal_Power()
+        {
+            URealDecimal_Power("0", "0", 1);
+            URealDecimal_Power("1", "2", 0);
+            URealDecimal_Power("81", "3", 4);
+            URealDecimal_Power("0.001", "0.1", 3);
+            URealDecimal_Power("65536", "2", 16);
+        }
+
         static void URealDecimal_Add(URealDecimal expected, URealDecimal d1, URealDecimal d2)
         {
             if (expected != d1 + d2) WriteLine($"{expected} != {d1} + {d2}");
@@ -77,6 +87,11 @@ namespace DecimalConsole
         static void URealDecimal_Multiply(URealDecimal expected, URealDecimal d1, URealDecimal d2)
         {
             if (expected != d1 * d2) WriteLine($"{expected} != {d1} * {d2}");
+        }
+
+        static void URealDecimal_Power(URealDecimal expected, URealDecimal d, int power)
+        {
+            if (expected != (d ^ power)) WriteLine($"{expected} != {d} ^ {power}");
         }
 
         static void EnumerableHelperTest()
