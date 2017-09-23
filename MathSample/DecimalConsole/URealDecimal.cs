@@ -46,6 +46,33 @@ namespace DecimalConsole
             Degree = degree;
         }
 
+        public override string ToString()
+        {
+            // 0
+            if (!Degree.HasValue)
+                return "0";
+
+            // x < 1
+            if (Degree.Value < 0)
+                return $"0.{new string('0', -Degree.Value - 1)}{Digits.ToSimpleString()}";
+
+            // Integer
+            if (Degree.Value >= Digits.Length - 1)
+                return $"{Digits.ToSimpleString()}{new string('0', Degree.Value - Digits.Length + 1)}";
+
+            var split = Digits.Split(Degree.Value + 1);
+            return $"{split[0].ToSimpleString()}.{split[1].ToSimpleString()}";
+        }
+
+        public override bool Equals(object obj) =>
+            obj is URealDecimal d && this == d;
+
+        public override int GetHashCode() => Digits
+            .Reverse()
+            .Take(9)
+            .Select((v, i) => v * Position10Map[i])
+            .Sum();
+
         static URealDecimal FromString(string value)
         {
             var match = Regex.Match(value, @"^([0-9]+)(\.([0-9]+))?$");
@@ -85,33 +112,6 @@ namespace DecimalConsole
 
         static URealDecimal FromInt32(int value) => value.ToString();
         static URealDecimal FromDouble(double value) => value.ToString();
-
-        public override string ToString()
-        {
-            // 0
-            if (!Degree.HasValue)
-                return "0";
-
-            // x < 1
-            if (Degree.Value < 0)
-                return $"0.{new string('0', -Degree.Value - 1)}{Digits.ToSimpleString()}";
-
-            // Integer
-            if (Degree.Value >= Digits.Length - 1)
-                return $"{Digits.ToSimpleString()}{new string('0', Degree.Value - Digits.Length + 1)}";
-
-            var split = Digits.Split(Degree.Value + 1);
-            return $"{split[0].ToSimpleString()}.{split[1].ToSimpleString()}";
-        }
-
-        public override bool Equals(object obj) =>
-            obj is URealDecimal d && this == d;
-
-        public override int GetHashCode() => Digits
-            .Reverse()
-            .Take(9)
-            .Select((v, i) => v * Position10Map[i])
-            .Sum();
 
         public static implicit operator URealDecimal(string value) => FromString(value);
         public static implicit operator URealDecimal(int value) => FromInt32(value);
@@ -266,12 +266,10 @@ namespace DecimalConsole
             var maxIndex = indexes.Max();
             var minIndex = indexes.Min();
 
-            var digits = new byte[maxIndex - minIndex + 1];
-            for (var i = 0; i < digits.Length; i++)
-            {
-                var j = maxIndex - i;
-                digits[i] = digits_dic.ContainsKey(j) ? digits_dic[j] : (byte)0;
-            }
+            var digits = Enumerable.Range(0, maxIndex - minIndex + 1)
+                .Select(j => maxIndex - j)
+                .Select(i => digits_dic.ContainsKey(i) ? digits_dic[i] : (byte)0)
+                .ToArray();
             return new URealDecimal(digits, maxIndex);
         }
     }
