@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace DecimalConsole
 {
-    struct URealDecimal
+    public struct URealDecimal
     {
         static readonly IDictionary<int, int> Position10Map = Enumerable.Range(0, 9).ToDictionary(i => i, i => (int)Math.Pow(10, i));
         static readonly IDictionary<char, byte> DigitsMap = Enumerable.Range(0, 10).ToDictionary(i => i.ToString()[0], i => (byte)i);
@@ -19,13 +19,13 @@ namespace DecimalConsole
         public int? Degree { get; }
         public bool IsZero => !Degree.HasValue;
 
-        public double this[int index]
+        public byte this[int index]
         {
             get
             {
                 if (!Degree.HasValue) return 0;
                 var i = Degree.Value - index;
-                return (0 <= i && i < Digits.Length) ? Digits[i] : 0;
+                return (0 <= i && i < Digits.Length) ? Digits[i] : (byte)0;
             }
         }
 

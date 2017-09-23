@@ -45,6 +45,7 @@
     <Compile Include="EnumerableHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RealDecimal.cs" />
     <Compile Include="URealDecimal.cs" />
   </ItemGroup>
   <ItemGroup>
