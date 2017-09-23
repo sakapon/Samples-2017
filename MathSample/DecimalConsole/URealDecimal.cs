@@ -14,10 +14,9 @@ namespace DecimalConsole
         public static URealDecimal Zero { get; } = default(URealDecimal);
 
         byte[] _digits;
-        byte[] Digits => _digits ?? _digits_empty;
+        public byte[] Digits => _digits ?? _digits_empty;
 
         public int? Degree { get; }
-
         public bool IsZero => !Degree.HasValue;
 
         public double this[int index]
@@ -30,7 +29,7 @@ namespace DecimalConsole
             }
         }
 
-        internal URealDecimal(byte[] digits, int? degree = null)
+        internal URealDecimal(byte[] digits, int? degree)
         {
             if (digits == null || digits.Length == 0)
             {
@@ -216,10 +215,10 @@ namespace DecimalConsole
 
         IEnumerable<(int i, byte v)> GetDigitsAsPairs()
         {
-            if (!Degree.HasValue) return Enumerable.Empty<(int, byte)>();
-
-            var degree = Degree.Value;
-            return Digits.Select((v, i) => (degree - i, v));
+            var d = this;
+            return Digits
+                .Select((v, i) => (i: d.Degree.Value - i, v: v))
+                .Where(_ => _.v != 0);
         }
 
         static void Add(Dictionary<int, byte> digits, int index, int value)
