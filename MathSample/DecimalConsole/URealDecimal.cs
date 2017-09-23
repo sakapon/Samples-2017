@@ -7,6 +7,7 @@ namespace DecimalConsole
 {
     struct URealDecimal
     {
+        static readonly IDictionary<int, int> Position10Map = Enumerable.Range(0, 9).ToDictionary(i => i, i => (int)Math.Pow(10, i));
         static readonly IDictionary<char, byte> DigitsMap = Enumerable.Range(0, 10).ToDictionary(i => i.ToString()[0], i => (byte)i);
         static readonly byte[] _digits_empty = new byte[0];
 
@@ -107,20 +108,11 @@ namespace DecimalConsole
         public override bool Equals(object obj) =>
             obj is URealDecimal d && this == d;
 
-        public override int GetHashCode()
-        {
-            if (!Degree.HasValue) return 0;
-
-            var sum = 0;
-            var p = 1;
-            var count = Math.Min(Digits.Length, 9);
-            for (var i = 0; i < count; i++)
-            {
-                sum += Digits[Digits.Length - 1 - i] * p;
-                p *= 10;
-            }
-            return sum;
-        }
+        public override int GetHashCode() => Digits
+            .Reverse()
+            .Take(9)
+            .Select((v, i) => v * Position10Map[i])
+            .Sum();
 
         public static implicit operator URealDecimal(string value) => FromString(value);
         public static implicit operator URealDecimal(int value) => FromInt32(value);
