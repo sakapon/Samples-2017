@@ -48,6 +48,58 @@ namespace DecimalConsole
         public static implicit operator RealDecimal(string value) => FromString(value);
         public static implicit operator RealDecimal(int value) => FromInt32(value);
         public static implicit operator RealDecimal(double value) => FromDouble(value);
+        public static implicit operator RealDecimal(URealDecimal value) => value.IsZero ? Zero : new RealDecimal(value, true);
+
+        public static RealDecimal operator +(RealDecimal d) => d;
+        public static RealDecimal operator -(RealDecimal d) => new RealDecimal(d.AbsoluteValue, !d.IsPositive);
+
+        public static RealDecimal operator +(RealDecimal d1, RealDecimal d2)
+        {
+            if (d1.IsPositive != false)
+            {
+                if (d2.IsPositive != false)
+                    return d1.AbsoluteValue + d2.AbsoluteValue;
+                else
+                    return d1.AbsoluteValue >= d2.AbsoluteValue ?
+                        d1.AbsoluteValue - d2.AbsoluteValue :
+                        new RealDecimal(d2.AbsoluteValue - d1.AbsoluteValue, false);
+            }
+            else
+            {
+                if (d2.IsPositive != false)
+                    return d2.AbsoluteValue >= d1.AbsoluteValue ?
+                        d2.AbsoluteValue - d1.AbsoluteValue :
+                        new RealDecimal(d1.AbsoluteValue - d2.AbsoluteValue, false);
+                else
+                    return new RealDecimal(d1.AbsoluteValue + d2.AbsoluteValue, false);
+            }
+        }
+
+        public static RealDecimal operator -(RealDecimal d1, RealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static RealDecimal operator *(RealDecimal d1, RealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static RealDecimal operator /(RealDecimal d1, RealDecimal d2)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Power
+        public static RealDecimal operator ^(RealDecimal d, int power)
+        {
+            if (power < 0) throw new NotImplementedException();
+
+            RealDecimal result = "1";
+            for (var i = 0; i < power; i++)
+                result *= d;
+            return result;
+        }
 
         public static RealDecimal operator <<(RealDecimal d, int shift) =>
             new RealDecimal(d.AbsoluteValue << shift, d.IsPositive);

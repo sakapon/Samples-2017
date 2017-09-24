@@ -159,7 +159,7 @@ namespace DecimalConsole
         // Power
         public static URealDecimal operator ^(URealDecimal d, int power)
         {
-            if (power < 0) throw new ArgumentOutOfRangeException(nameof(power), "The value must be non-negative.");
+            if (power < 0) throw new NotImplementedException();
 
             URealDecimal result = "1";
             for (var i = 0; i < power; i++)
@@ -257,12 +257,12 @@ namespace DecimalConsole
 
         static URealDecimal ToURealDecimal(Dictionary<int, byte> digits_dic)
         {
-            if (digits_dic.Count == 0) return Zero;
-
             var indexes = digits_dic
                 .Where(p => p.Value != 0)
                 .Select(p => p.Key)
                 .ToArray();
+            if (indexes.Length == 0) return Zero;
+
             var maxIndex = indexes.Max();
             var minIndex = indexes.Min();
 
