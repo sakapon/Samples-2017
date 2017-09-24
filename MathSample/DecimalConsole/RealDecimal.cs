@@ -24,9 +24,23 @@ namespace DecimalConsole
             IsPositive = isPositive;
         }
 
-        public override string ToString()
+        public override string ToString() =>
+            $"{(IsPositive == false ? "-" : "")}{AbsoluteValue}";
+
+        static RealDecimal FromString(string value)
         {
-            return base.ToString();
+            var hasMinus = value?.StartsWith("-") ?? throw new ArgumentNullException();
+            URealDecimal ud = value.TrimStart('-');
+            var isPositive = ud.IsZero ? default(bool?) : !hasMinus;
+
+            return new RealDecimal(ud, isPositive);
         }
+
+        static RealDecimal FromInt32(int value) => value.ToString();
+        static RealDecimal FromDouble(double value) => value.ToString();
+
+        public static implicit operator RealDecimal(string value) => FromString(value);
+        public static implicit operator RealDecimal(int value) => FromInt32(value);
+        public static implicit operator RealDecimal(double value) => FromDouble(value);
     }
 }
