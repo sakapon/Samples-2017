@@ -15,6 +15,9 @@ namespace DecimalConsole
             URealDecimal_Multiply();
             URealDecimal_Power();
 
+            RealDecimal_Inequality();
+            RealDecimal_Add();
+
             EnumerableHelperTest();
         }
 
@@ -98,6 +101,54 @@ namespace DecimalConsole
             Test("81", "3", 4);
             Test("0.001", "0.1", 3);
             Test("65536", "2", 16);
+        }
+
+        static void RealDecimal_Inequality()
+        {
+            void Test(bool expected, RealDecimal d1, RealDecimal d2)
+            {
+                if (expected != d1 < d2) WriteLine($"{expected} != {d1} < {d2}");
+            }
+
+            Test(false, 0, 0);
+            Test(false, 1, 1);
+            Test(false, -1, -1);
+
+            Test(true, 0, 1);
+            Test(false, 0, -1);
+            Test(false, 1, 0);
+            Test(true, -1, 0);
+
+            Test(true, 1, 2);
+            Test(false, 2, 1);
+            Test(false, -1, -2);
+            Test(true, -2, -1);
+            Test(true, -1, 1);
+            Test(false, 1, -1);
+        }
+
+        static void RealDecimal_Add()
+        {
+            void Test(RealDecimal expected, RealDecimal d1, RealDecimal d2)
+            {
+                if (expected != d1 + d2) WriteLine($"{expected} != {d1} + {d2}");
+            }
+
+            Test(0, 0, 0);
+            Test(1, 0, 1);
+            Test(-1, 0, -1);
+            Test(1, 1, 0);
+            Test(-1, -1, 0);
+
+            Test(3, 1, 2);
+            Test(-3, -1, -2);
+
+            Test(0, 1, -1);
+            Test(0, -1, 1);
+            Test(1, 2, -1);
+            Test(1, -1, 2);
+            Test(-1, 1, -2);
+            Test(-1, -2, 1);
         }
 
         static void EnumerableHelperTest()
