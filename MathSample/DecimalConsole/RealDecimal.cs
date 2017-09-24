@@ -27,6 +27,12 @@ namespace DecimalConsole
         public override string ToString() =>
             $"{(IsPositive == false ? "-" : "")}{AbsoluteValue}";
 
+        public override bool Equals(object obj) =>
+            obj is RealDecimal d && this == d;
+
+        public override int GetHashCode() =>
+            AbsoluteValue.GetHashCode();
+
         static RealDecimal FromString(string value)
         {
             var hasMinus = value?.StartsWith("-") ?? throw new ArgumentNullException();
@@ -42,5 +48,59 @@ namespace DecimalConsole
         public static implicit operator RealDecimal(string value) => FromString(value);
         public static implicit operator RealDecimal(int value) => FromInt32(value);
         public static implicit operator RealDecimal(double value) => FromDouble(value);
+
+        public static RealDecimal operator <<(RealDecimal d, int shift) =>
+            new RealDecimal(d.AbsoluteValue << shift, d.IsPositive);
+
+        public static RealDecimal operator >>(RealDecimal d, int shift) =>
+            d << -shift;
+
+        public static bool operator ==(RealDecimal d1, RealDecimal d2) =>
+            d1.IsPositive == d2.IsPositive && d1.AbsoluteValue == d2.AbsoluteValue;
+
+        public static bool operator !=(RealDecimal d1, RealDecimal d2) =>
+            !(d1 == d2);
+
+        public static bool operator <(RealDecimal d1, RealDecimal d2)
+        {
+            if (d1.IsPositive != false)
+            {
+                if (d2.IsPositive != false)
+                    return d1.AbsoluteValue < d2.AbsoluteValue;
+                else
+                    return false;
+            }
+            else
+            {
+                if (d2.IsPositive != false)
+                    return true;
+                else
+                    return d1.AbsoluteValue > d2.AbsoluteValue;
+            }
+        }
+
+        public static bool operator >(RealDecimal d1, RealDecimal d2)
+        {
+            if (d1.IsPositive != false)
+            {
+                if (d2.IsPositive != false)
+                    return d1.AbsoluteValue > d2.AbsoluteValue;
+                else
+                    return true;
+            }
+            else
+            {
+                if (d2.IsPositive != false)
+                    return false;
+                else
+                    return d1.AbsoluteValue < d2.AbsoluteValue;
+            }
+        }
+
+        public static bool operator <=(RealDecimal d1, RealDecimal d2) =>
+            !(d1 > d2);
+
+        public static bool operator >=(RealDecimal d1, RealDecimal d2) =>
+            !(d1 < d2);
     }
 }
