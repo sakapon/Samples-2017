@@ -17,6 +17,8 @@ namespace DecimalConsole
 
             RealDecimal_Inequality();
             RealDecimal_Add();
+            RealDecimal_Multiply();
+            RealDecimal_Power();
 
             EnumerableHelperTest();
         }
@@ -149,6 +151,32 @@ namespace DecimalConsole
             Test(1, -1, 2);
             Test(-1, 1, -2);
             Test(-1, -2, 1);
+        }
+
+        static void RealDecimal_Multiply()
+        {
+            void Test(RealDecimal expected, RealDecimal d1, RealDecimal d2)
+            {
+                if (expected != d1 * d2) WriteLine($"{expected} != {d1} * {d2}");
+            }
+
+            Test(0, 0, 0);
+            Test(0, 0, 1);
+            Test(0, 0, -1);
+            Test(0, 1, 0);
+            Test(0, -1, 0);
+
+            Test(6, 3, 2);
+            Test(6, -3, -2);
+            Test(-6, 3, -2);
+            Test(-6, -3, 2);
+        }
+
+        static void RealDecimal_Power()
+        {
+            var d2_31 = (RealDecimal)(-2) ^ 31;
+            var d3_30 = (RealDecimal)3 ^ 30;
+            var d3_100 = (RealDecimal)3 ^ 100;
         }
 
         static void EnumerableHelperTest()
