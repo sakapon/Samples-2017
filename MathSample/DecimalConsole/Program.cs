@@ -13,6 +13,7 @@ namespace DecimalConsole
             URealDecimal_Add();
             URealDecimal_Subtract();
             URealDecimal_Multiply();
+            URealDecimal_Divide();
             URealDecimal_Power();
 
             RealDecimal_Inequality();
@@ -89,6 +90,22 @@ namespace DecimalConsole
             Test("0.00018", "0.02", "0.009");
             Test("485.45663", "60.007", "8.09");
             Test("1", "32", "0.03125");
+        }
+
+        static void URealDecimal_Divide()
+        {
+            void Test(URealDecimal expected, URealDecimal d1, URealDecimal d2)
+            {
+                if (expected != d1 / d2) WriteLine($"{expected} != {d1} / {d2}");
+            }
+
+            Test(0, 0, 1);
+            Test(2, 2, 1);
+            Test(1, 2, 2);
+            Test(3, 0.06, 0.02);
+            Test(27, 999, 37);
+            Test("0.1428571428", 1, 7);
+            Test("169.1095890", 12345, 73);
         }
 
         static void URealDecimal_Power()
