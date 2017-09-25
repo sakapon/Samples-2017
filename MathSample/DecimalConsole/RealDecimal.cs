@@ -81,7 +81,9 @@ namespace DecimalConsole
 
         public static RealDecimal operator /(RealDecimal d1, RealDecimal d2)
         {
-            throw new NotImplementedException();
+            if (d2.IsZero) throw new ArithmeticException();
+            if (d1.IsZero) return Zero;
+            return new RealDecimal(d1.AbsoluteValue / d2.AbsoluteValue, d1.IsPositive == d2.IsPositive);
         }
 
         // Power

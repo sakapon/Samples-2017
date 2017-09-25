@@ -153,7 +153,33 @@ namespace DecimalConsole
 
         public static URealDecimal operator /(URealDecimal d1, URealDecimal d2)
         {
-            throw new NotImplementedException();
+            if (d2.IsZero) throw new ArithmeticException();
+            if (d1.IsZero) return Zero;
+
+            var degree = d1.Degree.Value - d2.Degree.Value;
+            var dividend = d1 >> d1.Degree.Value;
+            var divisor = d2 >> d2.Degree.Value;
+
+            if (dividend < divisor)
+            {
+                degree--;
+                dividend <<= 1;
+            }
+
+            var quotient = new List<byte>();
+            for (var i = 0; i < 10; i++)
+            {
+                var sol = Divide_1(dividend, divisor);
+                dividend = sol.remainder;
+                quotient.Add((byte)sol.quotient);
+                if (dividend.IsZero) break;
+                dividend <<= 1;
+            }
+
+            while (quotient[quotient.Count - 1] == 0)
+                quotient.RemoveAt(quotient.Count - 1);
+
+            return new URealDecimal(quotient.ToArray(), degree);
         }
 
         // Power
@@ -183,11 +209,13 @@ namespace DecimalConsole
         {
             if (!d2.Degree.HasValue) return false;
             if (!d1.Degree.HasValue) return true;
+            if (d1.Degree.Value > d2.Degree.Value) return false;
             if (d1.Degree.Value < d2.Degree.Value) return true;
 
             var digitsCount = Math.Min(d1.Digits.Length, d2.Digits.Length);
             for (var i = 0; i < digitsCount; i++)
             {
+                if (d1.Digits[i] > d2.Digits[i]) return false;
                 if (d1.Digits[i] < d2.Digits[i]) return true;
             }
             return d1.Digits.Length < d2.Digits.Length;
@@ -197,11 +225,13 @@ namespace DecimalConsole
         {
             if (!d1.Degree.HasValue) return false;
             if (!d2.Degree.HasValue) return true;
+            if (d1.Degree.Value < d2.Degree.Value) return false;
             if (d1.Degree.Value > d2.Degree.Value) return true;
 
             var digitsCount = Math.Min(d1.Digits.Length, d2.Digits.Length);
             for (var i = 0; i < digitsCount; i++)
             {
+                if (d1.Digits[i] < d2.Digits[i]) return false;
                 if (d1.Digits[i] > d2.Digits[i]) return true;
             }
             return d1.Digits.Length > d2.Digits.Length;
@@ -253,6 +283,17 @@ namespace DecimalConsole
                 Subtract_1(digits, index + 1, 1);
                 digits[index] = (byte)(v + 10);
             }
+        }
+
+        static (int quotient, URealDecimal remainder) Divide_1(URealDecimal dividend, URealDecimal divisor)
+        {
+            var remainder = dividend;
+            for (var i = 0; i < 10; i++)
+            {
+                if (remainder < divisor) return (i, remainder);
+                remainder -= divisor;
+            }
+            throw new InvalidOperationException();
         }
 
         static URealDecimal ToURealDecimal(Dictionary<int, byte> digits_dic)
