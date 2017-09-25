@@ -70,14 +70,13 @@ namespace DecimalConsole
                     new RealDecimal(d2.AbsoluteValue - d1.AbsoluteValue, false);
         }
 
-        public static RealDecimal operator -(RealDecimal d1, RealDecimal d2)
-        {
-            throw new NotImplementedException();
-        }
+        public static RealDecimal operator -(RealDecimal d1, RealDecimal d2) =>
+            d1 + (-d2);
 
         public static RealDecimal operator *(RealDecimal d1, RealDecimal d2)
         {
-            throw new NotImplementedException();
+            if (d1.IsZero || d2.IsZero) return Zero;
+            return new RealDecimal(d1.AbsoluteValue * d2.AbsoluteValue, d1.IsPositive == d2.IsPositive);
         }
 
         public static RealDecimal operator /(RealDecimal d1, RealDecimal d2)
