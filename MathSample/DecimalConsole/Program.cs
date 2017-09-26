@@ -106,6 +106,13 @@ namespace DecimalConsole
             Test(27, 999, 37);
             Test("0.1428571428", 1, 7);
             Test("169.1095890", 12345, 73);
+
+            void Test_20(URealDecimal expected, URealDecimal d1, URealDecimal d2)
+            {
+                if (expected != URealDecimal.Divide(d1, d2, 20)) WriteLine($"{expected} != {d1} / {d2}");
+            }
+
+            Test_20("0.058823529411764705882", 1, 17);
         }
 
         static void URealDecimal_Power()

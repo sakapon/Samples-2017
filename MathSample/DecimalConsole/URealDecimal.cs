@@ -7,6 +7,7 @@ namespace DecimalConsole
 {
     public struct URealDecimal
     {
+        internal const int DefaultMaxDigits = 10;
         static readonly IDictionary<int, int> Position10Map = Enumerable.Range(0, 9).ToDictionary(i => i, i => (int)Math.Pow(10, i));
         static readonly IDictionary<char, byte> DigitsMap = Enumerable.Range(0, 10).ToDictionary(i => i.ToString()[0], i => (byte)i);
         static readonly byte[] _digits_empty = new byte[0];
@@ -151,7 +152,10 @@ namespace DecimalConsole
             return ToURealDecimal(digits);
         }
 
-        public static URealDecimal operator /(URealDecimal d1, URealDecimal d2)
+        public static URealDecimal operator /(URealDecimal d1, URealDecimal d2) =>
+            Divide(d1, d2);
+
+        public static URealDecimal Divide(URealDecimal d1, URealDecimal d2, int maxDigits = DefaultMaxDigits)
         {
             if (d2.IsZero) throw new ArithmeticException();
             if (d1.IsZero) return Zero;
@@ -167,7 +171,7 @@ namespace DecimalConsole
             }
 
             var quotient = new List<byte>();
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < maxDigits; i++)
             {
                 var sol = Divide_1(dividend, divisor);
                 dividend = sol.remainder;

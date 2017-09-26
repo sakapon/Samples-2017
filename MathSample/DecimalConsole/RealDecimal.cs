@@ -79,11 +79,14 @@ namespace DecimalConsole
             return new RealDecimal(d1.AbsoluteValue * d2.AbsoluteValue, d1.IsPositive == d2.IsPositive);
         }
 
-        public static RealDecimal operator /(RealDecimal d1, RealDecimal d2)
+        public static RealDecimal operator /(RealDecimal d1, RealDecimal d2) =>
+            Divide(d1, d2);
+
+        public static RealDecimal Divide(RealDecimal d1, RealDecimal d2, int maxDigits = URealDecimal.DefaultMaxDigits)
         {
             if (d2.IsZero) throw new ArithmeticException();
             if (d1.IsZero) return Zero;
-            return new RealDecimal(d1.AbsoluteValue / d2.AbsoluteValue, d1.IsPositive == d2.IsPositive);
+            return new RealDecimal(URealDecimal.Divide(d1.AbsoluteValue, d2.AbsoluteValue, maxDigits), d1.IsPositive == d2.IsPositive);
         }
 
         // Power
