@@ -199,6 +199,8 @@ namespace DecimalConsole
         static void RealDecimal_Power()
         {
             var d2_31 = (RealDecimal)(-2) ^ 31;
+            var d2_4 = (RealDecimal)2 ^ -4;
+            var d02_3 = (RealDecimal)(-0.2) ^ -3;
             var d3_30 = (RealDecimal)3 ^ 30;
             var d3_100 = (RealDecimal)3 ^ 100;
         }

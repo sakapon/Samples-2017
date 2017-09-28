@@ -92,11 +92,16 @@ namespace DecimalConsole
         // Power
         public static RealDecimal operator ^(RealDecimal d, int power)
         {
-            if (power < 0) throw new NotImplementedException();
+            if (d.IsZero && power == 0) throw new ArithmeticException();
+            if (d.IsZero) return Zero;
 
             RealDecimal result = "1";
-            for (var i = 0; i < power; i++)
-                result *= d;
+            if (power >= 0)
+                for (var i = 0; i < power; i++)
+                    result *= d;
+            else
+                for (var i = 0; i > power; i--)
+                    result /= d;
             return result;
         }
 

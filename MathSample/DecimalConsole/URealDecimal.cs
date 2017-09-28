@@ -189,11 +189,16 @@ namespace DecimalConsole
         // Power
         public static URealDecimal operator ^(URealDecimal d, int power)
         {
-            if (power < 0) throw new NotImplementedException();
+            if (d.IsZero && power == 0) throw new ArithmeticException();
+            if (d.IsZero) return Zero;
 
             URealDecimal result = "1";
-            for (var i = 0; i < power; i++)
-                result *= d;
+            if (power >= 0)
+                for (var i = 0; i < power; i++)
+                    result *= d;
+            else
+                for (var i = 0; i > power; i--)
+                    result /= d;
             return result;
         }
 
